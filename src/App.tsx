@@ -1,9 +1,18 @@
-function App() {
+import React from "react";
+import { Container, Typography } from "@mui/material";
+import UserInterface from "./view/UserInterface";
+
+const App: React.FC = () => {
   return (
-    <>
-      <div>Click on the Vite and React logos to learn more</div>
-    </>
+    <Container
+      sx={{ display: "flex", justifyContent: "center", flexWrap: "wrap" }}
+    >
+      <Typography variant="h4" gutterBottom>
+        StackOverflow Tags Browser
+      </Typography>
+      <UserInterface />
+    </Container>
   );
-}
+};
 
 export default App;
