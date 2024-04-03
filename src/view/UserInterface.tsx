@@ -2,13 +2,19 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { CircularProgress, Pagination, TextField } from "@mui/material";
 import tagStore from "../stores/TagStore";
-import TagTable from "../components/TagTable";
-import ErrorMessage from "../components/ErrorMessage";
+import TagTable from "../components/TagTable/TagTable";
+import ErrorMessage from "../components/ErrorMessage/ErrorMessage";
 
 const UserInterface: React.FC = observer(() => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [orderBy, setOrder] = useState({ field: "name", order: "desc" });
+  const [orderBy, setOrder] = useState<{
+    field: "name" | "popular";
+    order: "asc" | "desc";
+  }>({
+    field: "name",
+    order: "desc",
+  });
 
   useEffect(() => {
     tagStore.fetchTags(
@@ -27,8 +33,11 @@ const UserInterface: React.FC = observer(() => {
     setPage(1);
   };
 
-  const handleChangeOrder = (order: string, field: string) => {
-    setOrder({ order: order, field: field });
+  const handleChangeOrder = (
+    field: "name" | "popular",
+    order: "asc" | "desc"
+  ) => {
+    setOrder({ field: field, order: order });
   };
 
   return (
@@ -60,7 +69,8 @@ const UserInterface: React.FC = observer(() => {
             <>
               <TagTable
                 handleChangeOrder={handleChangeOrder}
-                orderBy={orderBy}
+                orderBy={orderBy.order}
+                orderByField={orderBy.field}
                 tags={tagStore.tags}
               ></TagTable>
               <Pagination

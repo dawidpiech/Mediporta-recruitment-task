@@ -1,3 +1,4 @@
+import React from "react";
 import { observer } from "mobx-react-lite";
 import {
   Table,
@@ -7,55 +8,54 @@ import {
   TableBody,
   TableSortLabel,
 } from "@mui/material";
-import Tag from "../types/Tag";
+import Tag from "../../types/Tag";
 
-interface TagTableProps {
-  handleChangeOrder: (order: string, field: string) => void;
-  orderBy: { field: string; order: string };
+export interface TagTableProps {
+  handleChangeOrder: (field: "name" | "popular", order: "asc" | "desc") => void;
+  orderByField: "name" | "popular";
+  orderBy: "asc" | "desc";
   tags: Tag[];
 }
 
 const TagTable: React.FC<TagTableProps> = observer(
-  ({ handleChangeOrder, orderBy, tags }) => {
+  ({ handleChangeOrder, orderBy, tags, orderByField }) => {
+    const handleSortChange = (field: "name" | "popular") => {
+      const order =
+        orderByField === field && orderBy === "asc" ? "desc" : "asc";
+      handleChangeOrder(field, order);
+    };
+
     return (
       <Table>
         <TableHead>
           <TableRow>
             <TableCell
-              onClick={() => {
-                orderBy.order === "desc"
-                  ? handleChangeOrder("asc", "name")
-                  : handleChangeOrder("desc", "name");
-              }}
+              onClick={() => handleSortChange("name")}
               sx={
-                orderBy.field === "name"
+                orderByField === "name"
                   ? { fontWeight: 900 }
                   : { fontWeight: 600 }
               }
             >
               <TableSortLabel
-                active={orderBy.field === "name"}
-                direction={orderBy.order === "desc" ? "desc" : "asc"}
+                active={orderByField === "name"}
+                direction={orderBy === "desc" ? "desc" : "asc"}
               >
                 Name
               </TableSortLabel>
             </TableCell>
             <TableCell
               align="right"
-              onClick={() => {
-                orderBy.order === "desc"
-                  ? handleChangeOrder("asc", "popular")
-                  : handleChangeOrder("desc", "popular");
-              }}
+              onClick={() => handleSortChange("popular")}
               sx={
-                orderBy.field === "popular"
+                orderByField === "popular"
                   ? { fontWeight: 900 }
                   : { fontWeight: 600 }
               }
             >
               <TableSortLabel
-                active={orderBy.field === "popular"}
-                direction={orderBy.order === "desc" ? "desc" : "asc"}
+                active={orderByField === "popular"}
+                direction={orderBy === "desc" ? "desc" : "asc"}
               >
                 Count
               </TableSortLabel>

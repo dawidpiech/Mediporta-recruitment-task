@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 
-interface ErrorMessageProps {
+export interface ErrorMessageProps {
   message: string;
   borderColor: string;
   fontColor: string;
